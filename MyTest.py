@@ -1,7 +1,5 @@
 from typing import List
 from os import system
-import random
-from datetime import datetime
 
 
 class MyTest:
@@ -30,7 +28,3 @@ class MyTest:
                 print("Bledny wybor! Sprobuj jeszcze raz")
             else:
                 return choice
-    
-    def useGeneratorWithRandomSeed(self, min_seed, max_seed, number_of_files):
-        pass
-

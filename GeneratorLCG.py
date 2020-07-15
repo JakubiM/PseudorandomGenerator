@@ -21,10 +21,7 @@ class LinearCongruentialGenerator(MyGenerator):
             str(self.a),
             str(self.c),
             str(self.min),
-            str(self.max),)
-
-    def setSeed(self, seed):
-        self.seed = seed
+            str(self.max))
 
     def setM(self, m):
         self.m = m
@@ -59,13 +56,14 @@ class LinearCongruentialGenerator(MyGenerator):
             print("4. c             ({})".format(self.c))
             print("5. min           ({})".format(self.min))
             print("6. max           ({})".format(self.max))
-            print("7. Generuj!")
-            print("8. Wyjdz!")
+            print("7. Generuj jeden!")
+            print("8. Generuj masowo z zakresem seedow!")
+            print("9. Wyjdz!")
 
-            choice = self.intInputValid(1, 8)
+            choice = self.intInputValid(1, 9)
 
             if choice == 1:
-                print("Podaj nowy weed: ")
+                print("Podaj nowy seed: ")
                 self.setSeed(self.intInputValid(0, self.MAX_SEED_VALUE))
 
             elif choice == 2:
@@ -92,4 +90,7 @@ class LinearCongruentialGenerator(MyGenerator):
                 self.getRandomFile(1000000)
 
             elif choice == 8:
+                self.setSeedRangeAndFileCount()
+
+            elif choice == 9:
                 break

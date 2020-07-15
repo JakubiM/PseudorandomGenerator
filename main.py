@@ -2,6 +2,7 @@ from os import system
 from GeneratorLCG import LinearCongruentialGenerator
 from Mersenne_Twister import MersenneTwister
 from MetodaSrodkaKwadratu import MiddleSquare
+from PythonNativeGenerator import PythonNativeGenerator
 
 from Image_test import ImageTest
 from Spectral_test import SpectralTest
@@ -15,6 +16,7 @@ class MyProgram:
         self.listOfGenerators.append(LinearCongruentialGenerator())
         self.listOfGenerators.append(MersenneTwister())
         self.listOfGenerators.append(MiddleSquare())
+        self.listOfGenerators.append(PythonNativeGenerator())
 
         self.listOfTests = []
 
@@ -60,7 +62,7 @@ choice = program.intInputValid(1, 2)
 if choice == 1:
     program.displayList(program.listOfGenerators)
     print("Wybierz generator: ")
-    generatorNumber = program.intInputValid(1, 3)
+    generatorNumber = program.intInputValid(1, 4)
     program.listOfGenerators[generatorNumber - 1].use()
 else:
     program.displayList(program.listOfTests)

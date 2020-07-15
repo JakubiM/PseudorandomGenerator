@@ -15,9 +15,6 @@ class MiddleSquare(MyGenerator):
             str(self.min),
             str(self.max))
 
-    def setSeed(self, seed):
-        self.seed = seed
-
     def getRandom(self):
         lenght = len(str(self.seed))
         center = int(lenght / 2)
@@ -45,13 +42,14 @@ class MiddleSquare(MyGenerator):
             print("1. seed          ({})".format(self.seed))
             print("2. min           ({})".format(self.min))
             print("3. max           ({})".format(self.max))
-            print("4. Generuj!")
-            print("5. Wyjdz!")
+            print("4. Generuj jeden!")
+            print("5. Generuj masowo z zakresem seedow!")
+            print("6. Wyjdz!")
 
-            choice = self.intInputValid(1, 8)
+            choice = self.intInputValid(1, 6)
 
             if choice == 1:
-                print("Podaj nowy weed: ")
+                print("Podaj nowy seed: ")
                 self.setSeed(self.intInputValid(0, self.MAX_SEED_VALUE))
 
             elif choice == 2:
@@ -66,4 +64,7 @@ class MiddleSquare(MyGenerator):
                 self.getRandomFile(1000000)
 
             elif choice == 5:
+                self.setSeedRangeAndFileCount()
+
+            elif choice == 6:
                 break

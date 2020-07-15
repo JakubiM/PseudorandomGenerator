@@ -1,17 +1,21 @@
-import sys
-from os import system
-import time
 from MyGenerator import MyGenerator
+import random
+from datetime import datetime
+from os import system
+from pathlib import Path
 
 
-class MersenneTwister(MyGenerator):
+class PythonNativeGenerator(MyGenerator):
+
     def __init__(self):
-        self.seed = 5412321
-        self.MT = [0 for x in range(624)]
-        self.mti = 0
-        self.name = "Mersenne_Twister"
+        self.name = "Python_native_generator"
+        self.seed = 0
         self.min = 0
         self.max = 999999
+        random.seed(self.seed)
+
+    def getRandom(self):
+        return random.randint(self.min, self.max)
 
     def getFileName(self):
         return "s_{}min_{}max_{}".format(
@@ -19,51 +23,16 @@ class MersenneTwister(MyGenerator):
             str(self.min),
             str(self.max))
 
-    def setMin(self, min):
-        self.min = min
-
-    def setMax(self, b):
-        self.b = max
-
-    def setSeed(self, seed):
-        self.seed = seed
-
-    def InitMT(self):
-        self.MT[0] = self.seed
-        for i in range(1, 623):
-            x = self.MT[i - 1]
-            x = (23023 * x) & 0xFFFFFFFF
-            x = (3*x) & 0xFFFFFFFF
-            self.MT[i] = x
-
-    def getRandom(self):
-        MA = [0, 0x9908B0DF]
-
-        i1 = self.mti + 1
-        if i1 > 623:
-            i1 = 0
-
-        i397 = self.mti
-        if i397 > 623:
-            i397 -= 624
-
-        y = (self.MT[self.mti] & 0x80000000) | (self.MT[i1] & 0x7FFFFFFF)
-        self.MT[self.mti] = self.MT[i397] ^ (y >> 1) ^ MA[y & 1]
-        y = self.MT[self.mti]
-        y ^= y >> 11
-        y ^= (y << 7) & 0x9D2C5680
-        y ^= (y << 15) & 0xEFC60000
-        y ^= y >> 18
-        self.mti = i1
-        return y
-
     def getRandomFile(self, count):
-        self.InitMT()
+        random.seed(self.seed)
         res = [(self.min + self.getRandom() % (self.max - self.min + 1))
                for _ in range(count)]
+        Path("./results/{}".format(self.name)
+             ).mkdir(parents=True, exist_ok=True)
         self.file = open(
             "results/{}/{}".format(self.name, self.getFileName()), 'w+')
         print(res, file=self.file)
+        print("Wygenerowano prawidlowo!")
 
     def use(self):
         while True:
@@ -81,7 +50,7 @@ class MersenneTwister(MyGenerator):
             choice = self.intInputValid(1, 6)
 
             if choice == 1:
-                print("Podaj nowy weed: ")
+                print("Podaj nowy seed: ")
                 self.setSeed(self.intInputValid(0, self.MAX_SEED_VALUE))
 
             elif choice == 2:

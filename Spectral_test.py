@@ -2,7 +2,7 @@ from pathlib import Path
 from MyTest import MyTest
 from typing import List
 from os import system, listdir
-from os.path import isfile
+from os.path import isfile, exists
 
 
 class SpectralTest(MyTest):
@@ -61,10 +61,11 @@ class SpectralTest(MyTest):
                 self.test()
             else:
                 for filename in listdir("./results/{}".format(self.generatorName)):
-                    print("Testuje: {}".format(filename))
-                    if not isfile("./results/{}/{}".format(self.generatorName, filename)):
-                        print("False")
-                        continue
 
+                    if not isfile("./results/{}/{}".format(self.generatorName, filename)):
+                        continue
+                    if exists("./results/{}/{}/{}".format(self.generatorName, self.name, filename)):
+                        continue
+                    print("Testuje: {}".format(filename))
                     self.testedFileName = filename
                     self.test()

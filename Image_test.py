@@ -4,7 +4,7 @@ from pathlib import Path
 from MyTest import MyTest
 from typing import List
 from os import system, listdir
-from os.path import isfile
+from os.path import isfile, exists
 
 
 class ImageTest(MyTest):
@@ -77,10 +77,11 @@ class ImageTest(MyTest):
             else:
                 for filename in listdir("./results/{}".format(self.generatorName)):
                     print("Testuje: {}".format(filename))
+                    
                     if not isfile("./results/{}/{}".format(self.generatorName, filename)):
-                        print("False")
                         continue
-
+                    if exists("./results/{}/{}/{}".format(self.generatorName, self.name, filename)):
+                        continue
                     self.testedFileName = filename
                     self.makeDraw()
 # ilosc
