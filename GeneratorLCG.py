@@ -1,11 +1,13 @@
 from MyGenerator import MyGenerator
 from os import system
 from os import sys
+from pathlib import Path
 
 
 class LinearCongruentialGenerator(MyGenerator):
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        super(LinearCongruentialGenerator, self).__init__(*args, **kwargs)
         self.name = "Linear_congruential_generator"
         self.seed = 0
         self.m = 4294967296
@@ -39,10 +41,7 @@ class LinearCongruentialGenerator(MyGenerator):
     def getRandomFile(self, count):
         res = [(self.min + self.getRandom() % (self.max - self.min + 1))
                for _ in range(count)]
-        self.file = open(
-            "results/{}/{}".format(self.name, self.getFileName()), 'w+')
-        print(res, file=self.file)
-        print("Wygenerowano prawidlowo!")
+        self.saveToFile(res)
 
     def use(self):
         while True:
@@ -87,7 +86,7 @@ class LinearCongruentialGenerator(MyGenerator):
                 self.setMax(self.intInputValid(0, self.MAX_SEED_VALUE))
 
             elif choice == 7:
-                self.getRandomFile(1000000)
+                self.getRandomFile(self.numberOfSamples)
 
             elif choice == 8:
                 self.setSeedRangeAndFileCount()

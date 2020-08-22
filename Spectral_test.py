@@ -36,36 +36,3 @@ class SpectralTest(MyTest):
             print("{}. {}%".format(i, self.results[i] / float(len(self.list))))
             print("{}. {}%".format(
                 i, self.results[i] / float(len(self.list))), file=file)
-
-    def use(self, listOfGenerators: List[MyTest]):
-        while(1):
-            system("clear")
-            print("Wybrales test: {}".format(self.getName()))
-            print("Wybierz generator który chcesz testowac:")
-            for i in range(len(listOfGenerators)):
-                print("{}. {}".format(i + 1, listOfGenerators[i].getName()))
-            choice = self.intInputValid(1, len(listOfGenerators))
-            self.setGeneratorName(listOfGenerators[choice - 1].getName())
-
-            system("clear")
-            print("Wybierz sposob testowania:")
-            print("1. Testuj wybrany plik.")
-            print("2. Testuj wszystkie nieprzetestowane pliki generatora {}".format(
-                self.generatorName))
-
-            choice = self.intInputValid(1, 2)
-
-            if choice == 1:
-                print("Podaj nazwe pliku:")
-                self.testedFileName = input()
-                self.test()
-            else:
-                for filename in listdir("./results/{}".format(self.generatorName)):
-
-                    if not isfile("./results/{}/{}".format(self.generatorName, filename)):
-                        continue
-                    if exists("./results/{}/{}/{}".format(self.generatorName, self.name, filename)):
-                        continue
-                    print("Testuje: {}".format(filename))
-                    self.testedFileName = filename
-                    self.test()

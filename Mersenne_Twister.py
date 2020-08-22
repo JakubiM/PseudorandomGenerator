@@ -2,22 +2,18 @@ import sys
 from os import system
 import time
 from MyGenerator import MyGenerator
+from pathlib import Path
 
 
 class MersenneTwister(MyGenerator):
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
+        super(MersenneTwister, self).__init__(*args, **kwargs)
         self.seed = 5412321
         self.MT = [0 for x in range(624)]
         self.mti = 0
         self.name = "Mersenne_Twister"
         self.min = 0
-        self.max = 999999
-
-    def getFileName(self):
-        return "s_{}min_{}max_{}".format(
-            str(self.seed),
-            str(self.min),
-            str(self.max))
+        self.max = 4294967295
 
     def setMin(self, min):
         self.min = min
@@ -61,42 +57,4 @@ class MersenneTwister(MyGenerator):
         self.InitMT()
         res = [(self.min + self.getRandom() % (self.max - self.min + 1))
                for _ in range(count)]
-        self.file = open(
-            "results/{}/{}".format(self.name, self.getFileName()), 'w+')
-        print(res, file=self.file)
-
-    def use(self):
-        while True:
-            system("clear")
-            print("Wybrales {}".format(self.name))
-            print(
-                "wybierz zmienna ktora chcesz ustawic, \n wartosc w nawiasie jest ustawiona domyslnie")
-            print("1. seed          ({})".format(self.seed))
-            print("2. min           ({})".format(self.min))
-            print("3. max           ({})".format(self.max))
-            print("4. Generuj jeden!")
-            print("5. Generuj masowo z zakresem seedow!")
-            print("6. Wyjdz!")
-
-            choice = self.intInputValid(1, 6)
-
-            if choice == 1:
-                print("Podaj nowy weed: ")
-                self.setSeed(self.intInputValid(0, self.MAX_SEED_VALUE))
-
-            elif choice == 2:
-                print("Podaj nowe minimum: ")
-                self.setMin(self.intInputValid(0, self.MAX_SEED_VALUE))
-
-            elif choice == 3:
-                print("Podaj nowe maksimum: ")
-                self.setMax(self.intInputValid(0, self.MAX_SEED_VALUE))
-
-            elif choice == 4:
-                self.getRandomFile(1000000)
-
-            elif choice == 5:
-                self.setSeedRangeAndFileCount()
-
-            elif choice == 6:
-                break
+        self.saveToFile(res)

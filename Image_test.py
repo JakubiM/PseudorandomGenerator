@@ -3,8 +3,6 @@ from PIL import Image, ImageDraw
 from pathlib import Path
 from MyTest import MyTest
 from typing import List
-from os import system, listdir
-from os.path import isfile, exists
 
 
 class ImageTest(MyTest):
@@ -35,7 +33,27 @@ class ImageTest(MyTest):
     def setSize(self, size):
         self.size = size
 
-    def makeDraw(self):
+    def countBlackPixels(self, img):
+        image = Image.open(img)
+        width, height = image.size
+        allPixels = width * height
+        blackPixels = 0
+
+        for pixel in image.getdata():
+            if pixel == (0, 0, 0):
+                blackPixels += 1
+
+        Path("./results/{}/{}".format(self.generatorName, self.name)
+             ).mkdir(parents=True, exist_ok=True)
+        file = open("./results/{}/{}/{}".format(self.generatorName,
+                                                self.name, self.testedFileName + "percentage"), "+w")
+
+        print("Total pixels = {}".format(allPixels), file=file)
+        print("Total black pixels = {}".format(blackPixels), file=file)
+        coverage = float(blackPixels) / allPixels * 100
+        print("Cover with black pixels = {}%".format(coverage), file=file)
+
+    def test(self):
 
         self.setList()
         image = PIL.Image.new("RGB", (self.size, self.size), self.bgcolor)
@@ -51,39 +69,5 @@ class ImageTest(MyTest):
              ).mkdir(parents=True, exist_ok=True)
         image.save("./results/{}/{}/{}.png".format(self.generatorName,
                                                    self.name, self.testedFileName))
-
-    def use(self, listOfGenerators: List[MyTest]):
-        while(1):
-            system("clear")
-            print("Wybrales test: {}".format(self.getName()))
-            print("Wybierz generator który chcesz testowac:")
-            for i in range(len(listOfGenerators)):
-                print("{}. {}".format(i + 1, listOfGenerators[i].getName()))
-            choice = self.intInputValid(1, len(listOfGenerators))
-            self.setGeneratorName(listOfGenerators[choice - 1].getName())
-
-            system("clear")
-            print("Wybierz sposob testowania:")
-            print("1. Testuj wybrany plik.")
-            print("2. Testuj wszystkie nieprzetestowane pliki generatora {}".format(
-                self.generatorName))
-
-            choice = self.intInputValid(1, 2)
-
-            if choice == 1:
-                print("Podaj nazwe pliku:")
-                self.testedFileName = input()
-                self.makeDraw()
-            else:
-                for filename in listdir("./results/{}".format(self.generatorName)):
-                    print("Testuje: {}".format(filename))
-                    
-                    if not isfile("./results/{}/{}".format(self.generatorName, filename)):
-                        continue
-                    if exists("./results/{}/{}/{}".format(self.generatorName, self.name, filename)):
-                        continue
-                    self.testedFileName = filename
-                    self.makeDraw()
-# ilosc
-# pojedynczych punktow
-# histogram od 0 do miliona
+        self.countBlackPixels("./results/{}/{}/{}.png".format(self.generatorName,
+                                                              self.name, self.testedFileName))
