@@ -64,6 +64,7 @@ class MyTest:
                 self.testedFileName = input()
                 self.test()
             else:
+                
                 for filename in listdir("./results/{}".format(self.generatorName)):
                     print("Testuje: {}".format(filename))
 

@@ -1,14 +1,13 @@
 from os import system
 from GeneratorLCG import LinearCongruentialGenerator
 from Mersenne_Twister import MersenneTwister
-from MetodaSrodkaKwadratu import MiddleSquare
+from Mid_square_technique import MiddleSquare
 from PythonNativeGenerator import PythonNativeGenerator
 from Numpy_Mt19937 import NumpyMt19937
 from Numpy_PCG64 import NumpyPCG64
 from Numpy_Philox import NumpyPhilox
 from Numpy_SFC64 import NumpySFC64
-from Linear_complexity_test import LinearComplexityTest
-from Matrix_Rank_Test import MatrixRankTest
+
 
 from Image_test import ImageTest
 from Spectral_test import SpectralTest
@@ -32,8 +31,7 @@ class MyProgram:
 
         self.listOfTests.append(ImageTest())
         self.listOfTests.append(SpectralTest())
-        self.listOfTests.append(LinearComplexityTest())
-        self.listOfTests.append(MatrixRankTest())
+
 
     def generators(self):
         system("clear")
@@ -59,25 +57,35 @@ class MyProgram:
         print("Dostepne opcje:")
         for i in range(len(myList)):
             print("{}. {}".format(i + 1, myList[i].getName()))
+        print("{}. Wroc".format(len(myList) + 1))
 
 
 program = MyProgram()
 
-system("clear")
-print("Wybierz akcje: ")
-print("=================")
-print("1. Generatory")
-print("2. Testy")
-print("=================")
-choice = program.intInputValid(1, 2)
 
-if choice == 1:
-    program.displayList(program.listOfGenerators)
-    print("Wybierz generator: ")
-    generatorNumber = program.intInputValid(1, 8)
-    program.listOfGenerators[generatorNumber - 1].use()
-else:
-    program.displayList(program.listOfTests)
-    print("Wybierz test:")
-    testNumber = program.intInputValid(1, 4)
-    program.listOfTests[testNumber - 1].use(program.listOfGenerators)
+while True:
+    system("clear")
+    print("Wybierz akcje: ")
+    print("=================")
+    print("1. Generatory")
+    print("2. Testy")
+    print("3. Wyjscie")
+    print("=================")
+    choice = program.intInputValid(1, 3)
+
+    if choice == 1:
+        program.displayList(program.listOfGenerators)
+        print("Wybierz generator: ")
+        generatorNumber = program.intInputValid(1, len(program.listOfGenerators) + 1)
+        if generatorNumber == (len(program.listOfGenerators) + 1):
+            continue
+        program.listOfGenerators[generatorNumber - 1].use()
+    if choice == 2:
+        program.displayList(program.listOfTests)
+        print("Wybierz test:")
+        testNumber = program.intInputValid(1, len(program.listOfTests) + 1)
+        if testNumber == (len(program.listOfTests) + 1):
+            continue
+        program.listOfTests[testNumber - 1].use(program.listOfGenerators)
+    if choice == 3:
+        break

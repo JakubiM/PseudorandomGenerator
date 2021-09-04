@@ -13,7 +13,7 @@ class MersenneTwister(MyGenerator):
         self.mti = 0
         self.name = "Mersenne_Twister"
         self.min = 0
-        self.max = 4294967295
+        self.max = 999999
 
     def setMin(self, min):
         self.min = min

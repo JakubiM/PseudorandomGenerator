@@ -13,6 +13,8 @@ class MiddleSquare(MyGenerator):
         self.max = 999999
 
     def getRandom(self):
+        if self.seed == 0:
+            return 0
         lenght = len(str(self.seed))
         center = int(lenght / 2)
         seed = int(self.seed)
@@ -29,5 +31,5 @@ class MiddleSquare(MyGenerator):
         Path("./results/{}".format(self.name)
              ).mkdir(parents=True, exist_ok=True)
         self.file = open(
-            "results/{}/{}".format(self.name, self.getFileName(seedOnStart)), 'w+')
+            "results/{}/{}".format(self.name, self.getFileName()), 'w+')
         print(res, file=self.file)
